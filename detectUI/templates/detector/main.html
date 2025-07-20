@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Main{% endblock %}
+
+{% block content %}
+<h2 class="text-xl font-semibold mb-4">My uploads</h2>
+
+{% if images %}
+  <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    {% for img in images %}
+      <div class="bg-white shadow rounded p-3">
+        <img src="{{ img.image.url }}"
+             alt="{{ img.original_filename }}"
+             class="w-full h-48 object-cover rounded">
+        <p class="text-xs text-gray-500 mt-2">
+          {{ img.uploaded_at|date:"Y‑m‑d H:i" }}
+        </p>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <p class="text-gray-600">You haven’t uploaded any images yet.</p>
+{% endif %}
+{% endblock %}

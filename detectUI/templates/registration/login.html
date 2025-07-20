@@ -1,11 +1,38 @@
-
 {% extends "base.html" %}
 {% block title %}Login{% endblock %}
+
 {% block content %}
-<h1>Login</h1>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button>Log in</button>
-</form>
+<div class="max-w-md mx-auto bg-white shadow-md rounded-lg px-6 py-8">
+  <h1 class="text-2xl font-semibold text-center mb-6">Login</h1>
+
+  <form method="post" class="space-y-4">
+    {% csrf_token %}
+
+    {# ── loop over form fields so we can style each one ── #}
+    {% for field in form %}
+      <div>
+        <label for="{{ field.id_for_label }}"
+               class="block text-sm font-medium text-gray-700 mb-1 ">
+          {{ field.label }}
+        </label>
+
+        {{ field }}
+
+        {# show validation errors, if any #}
+        {% if field.errors %}
+          <p class="text-sm text-red-600 mt-1">
+            {{ field.errors|striptags }}
+          </p>
+        {% endif %}
+      </div>
+    {% endfor %}
+
+    <button type="submit"
+            class="w-full py-2 px-4 bg-indigo-600 text-white rounded-md
+                   hover:bg-indigo-700 focus:outline-none focus:ring-2
+                   focus:ring-indigo-500">
+      Log in
+    </button>
+  </form>
+</div>
 {% endblock %}
