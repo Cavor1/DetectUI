@@ -12,4 +12,7 @@ class UploadedImage(models.Model):
     ) 
     image = models.ImageField(upload_to=image_path)
     uploaded_at = models.DateTimeField(auto_now_add=True)
-# Create your models here.
+
+class AiModel(models.Model):
+    name = models.CharField()
+    

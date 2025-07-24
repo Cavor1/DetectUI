@@ -1,23 +1,56 @@
 {% extends "base.html" %}
 {% block title %}Main{% endblock %}
+{% block content%}
+<div class = "grid lg:grid-cols-2 gap-8">
+<div>
+<h2 class="text-xl font-semibold mb-4">Upload new image</h2>
 
-{% block content %}
+<form method="post" enctype="multipart/form-data"
+      class="max-w-md space-y-4 mb-8">
+  {% csrf_token %}
+  {{ form.image.label_tag }}
+  {{ form.image }}          {# Tailwind class injected from the widget #}
+
+  {% if form.errors %}
+    <p class="text-sm text-red-600">{{ form.errors.image|striptags }}</p>
+  {% endif %}
+
+  <button type="submit"
+          class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
+    Upload
+  </button>
+</form>
+
 <h2 class="text-xl font-semibold mb-4">My uploads</h2>
 
 {% if images %}
   <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
     {% for img in images %}
+    <a href="?img={{img.id}}">
       <div class="bg-white shadow rounded p-3">
         <img src="{{ img.image.url }}"
              alt="{{ img.original_filename }}"
              class="w-full h-48 object-cover rounded">
-        <p class="text-xs text-gray-500 mt-2">
+        <p class="text-xs text-gray-500 mt-2"> {{ img.name}}
           {{ img.uploaded_at|date:"Y‑m‑d H:i" }}
+          
         </p>
       </div>
+    </a>
     {% endfor %}
   </div>
 {% else %}
   <p class="text-gray-600">You haven’t uploaded any images yet.</p>
 {% endif %}
+</div>
+<div>
+  {% if selected %}
+    <div class="bg-white shadow rounded p-4">
+      <img src="{{ selected.image.url }}" class="w-full object-contain">
+    </div>
+  {% else %}
+    <p class="text-gray-500">Click a thumbnail to preview.</p>
+  {% endif %}
+</div>
+</div>
 {% endblock %}

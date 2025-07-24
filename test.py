@@ -1,47 +1,12 @@
+from types import resolve_bases
+from ollama import chat, ChatResponse
 
-import requests
-from PIL import Image
-import numpy as np
-import torch
-from transformers import AutoProcessor, Owlv2ForObjectDetection
-from transformers.utils.constants import OPENAI_CLIP_MEAN, OPENAI_CLIP_STD
+response : ChatResponse = chat(model = 'llava-phi3:3.8b', messages = [
+    {
+        'role':'user',
+        'content':'whats on the image?',
+        'images':['./test.png']
+    }
+])
 
-processor = AutoProcessor.from_pretrained("google/owlv2-base-patch16")
-model = Owlv2ForObjectDetection.from_pretrained("google/owlv2-base-patch16")
-
-url = "http://images.cocodataset.org/val2017/000000039769.jpg"
-url = 'https://www.webbox.co.uk/wp-content/uploads/2019/04/shutterstock_1095001973.webp'
-image = Image.open(requests.get(url, stream=True).raw)
-texts = [["a photo of a cat", "a photo of a dog"]]
-inputs = processor(text=texts, images=image, return_tensors="pt")
-
-# forward pass
-with torch.no_grad():
-    outputs = model(**inputs)
-
-# Note: boxes need to be visualized on the padded, unnormalized image
-# hence we'll set the target image sizes (height, width) based on that
-
-def get_preprocessed_image(pixel_values):
-    pixel_values = pixel_values.squeeze().numpy()
-    unnormalized_image = (pixel_values * np.array(OPENAI_CLIP_STD)[:, None, None]) + np.array(OPENAI_CLIP_MEAN)[:, None, None]
-    unnormalized_image = (unnormalized_image * 255).astype(np.uint8)
-    unnormalized_image = np.moveaxis(unnormalized_image, 0, -1)
-    unnormalized_image = Image.fromarray(unnormalized_image)
-    return unnormalized_image
-
-unnormalized_image = get_preprocessed_image(inputs.pixel_values)
-
-target_sizes = torch.Tensor([unnormalized_image.size[::-1]])
-# Convert outputs (bounding boxes and class logits) to final bounding boxes and scores
-results = processor.post_process_object_detection(
-    outputs=outputs, threshold=0.2, target_sizes=target_sizes
-)
-
-i = 0   # Retrieve predictions for the first image for the corresponding text queries
-text = texts[i]
-boxes, scores, labels = results[i]["boxes"], results[i]["scores"], results[i]["labels"]
-
-for box, score, label in zip(boxes, scores, labels):
-    box = [round(i, 2) for i in box.tolist()]
-    print(f"Detected {text[label]} with confidence {round(score.item(), 3)} at location {box}")
+print(response.message.content)

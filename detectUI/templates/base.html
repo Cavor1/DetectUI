@@ -1,5 +1,4 @@
-
-{# templates/base.html #}
+{% load static %}
 <!doctype html>
 <html lang="en">
 <head>
@@ -43,8 +42,8 @@
   </header>
 
   <!-- ─── Main page body ──────────────────────────────────────── -->
-  <main class="flex-1 max-w-7xl mx-auto w-full px-4 py-6">
-    {% block content %}{% endblock %}
+  <main class="flex-1 max-w-7xl mx-auto w-full px-4 py-6" >
+      {% block content%}{%endblock%}
   </main>
 </body>
 </html>
