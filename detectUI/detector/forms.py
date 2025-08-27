@@ -1,4 +1,5 @@
 from django import forms
+from django.db.models import Model
 from .models import UploadedImage
 
 class ImageUploadForm(forms.ModelForm):
@@ -11,4 +12,5 @@ class ImageUploadForm(forms.ModelForm):
             })
         }
 
-
+class ModelsFrom(forms.Form):
+    field = forms.ChoiceField()

@@ -38,4 +38,5 @@ class Message(models.Model):
         related_name='messages'
     )
     role= models.CharField(max_length=10, choices=ROLE_CHOICES)
+    sent_at = models.DateTimeField(auto_now_add=True)
 

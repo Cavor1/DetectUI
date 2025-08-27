@@ -4,6 +4,9 @@ from .models import UploadedImage
 from django.contrib.auth.decorators import login_required
 from .forms import ImageUploadForm
 
+model_list = ['a','b','c']
+
+
 @login_required
 def main(request):
     if request.method == 'POST':
@@ -21,5 +24,5 @@ def main(request):
     )
     selected_id = request.GET.get("img")
     selected_img = UploadedImage.objects.filter(pk=selected_id,user=request.user).first()
-    return render(request, 'detector/main.html',{'images':images, 'form':form, 'selected':selected_img})
+    return render(request, 'detector/main.html',{'images':images, 'form':form, 'selected':selected_img, "model_list":model_list })
 # Create your views here.

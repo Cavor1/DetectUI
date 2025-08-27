@@ -48,6 +48,16 @@
     <div class="bg-white shadow rounded p-4">
       <img src="{{ selected.image.url }}" class="w-full object-contain">
     </div>
+    <div class="flex items-center space-x-2">
+      <select name = "model" class="border border-gray-300 rounded-md px-3 py-2 text-sm shadow-sm 
+         focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+        {% for model in model_list %}
+        <option value = "{{model}}"> {{model}} </option>
+        {% endfor %}
+      </select>
+      <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
+      Detect </button>
+    </div>
   {% else %}
     <p class="text-gray-500">Click a thumbnail to preview.</p>
   {% endif %}
