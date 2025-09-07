@@ -5,5 +5,5 @@ class VitModel(InferenceModel):
     def __init__(self) -> None:
         super().__init__()
 
-    def predict(self, image) -> InferenceResult:
+    def detect(self, image) -> InferenceResult:
         return super().predict(image)
