@@ -24,3 +24,5 @@ media/
 *.png
 *.jpeg
 
+node_modules/
+

@@ -4,9 +4,7 @@
 <head>
   <meta charset="utf-8">
   <title>{% block title %}Detect UI{% endblock %}</title>
-
-  <!-- Tailwind quick‑start (CDN) -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="{% static 'css/tailwind.css' %}">
 </head>
 <body class="min-h-screen flex flex-col bg-gray-50">
 
@@ -19,12 +17,11 @@
         <a href="/" class="hover:text-indigo-200">Detect UI</a>
       </h1>
 
-      <!-- auth actions -->
+      <!-- auth -->
       <nav class="text-sm space-x-4">
         {% if request.user.is_authenticated %}
           <span class="hidden sm:inline">Hi {{ request.user.username }}!</span>
 
-          <!-- logout must be POST -->
           <form action="{% url 'logout' %}" method="post" class="inline">
             {% csrf_token %}
             <button type="submit" class="underline text-indigo-200 hover:text-white">
