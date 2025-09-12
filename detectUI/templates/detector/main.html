@@ -71,10 +71,29 @@
         Detect </button>
       </div>
     </form>
-    {% if detect_result %}
-      <p> {{detect_result}}</p>
-    {% endif %}
+{% if labels is not None %}
+  <div class="overflow-x-auto mt-4">
+    <table class="min-w-full border border-gray-300 text-sm rounded-lg overflow-hidden">
+      <thead class="bg-gray-100">
+        <tr>
+          <th class="px-4 py-2 text-left font-medium text-gray-700">Object</th>
+          <th class="px-4 py-2 text-left font-medium text-gray-700">Confidence</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200">
+        {% for label,conf in labels %}
+            <tr>
+              <td class="px-4 py-2 text-gray-800">{{ label }}</td>
+              <td class="px-4 py-2 text-gray-600">{{ conf }}</td>
+            </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 
+{% else %}
+    <p> Click detect to run detection </p>
+{% endif %}
 
   {% else %}
     <p class="text-gray-500">Click a thumbnail to preview.</p>

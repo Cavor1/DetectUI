@@ -8,7 +8,6 @@
   <form method="post" class="space-y-4">
     {% csrf_token %}
 
-    {# ── loop over form fields so we can style each one ── #}
     {% for field in form %}
       <div>
         <label for="{{ field.id_for_label }}"

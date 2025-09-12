@@ -11,7 +11,7 @@ from PIL import Image
 def main(request):
 
     form = ImageUploadForm()
-    detect_result = None
+    labels = None
 
 
 
@@ -38,9 +38,10 @@ def main(request):
             try:
                 img = Image.open(selected_img.image.path)
                 result = inference_models[model].detect(img)  # your InferenceResult
-                detect_result = f'{result}'
+                labels = result.labels
+                labels = labels
             except Exception as e:
-                detect_result = f'{e}'
+                labels = [f'{e}']
 
 
 
@@ -51,6 +52,6 @@ def main(request):
         'form':form,
         'selected':selected_img,
         'model_list':inference_models,
-        'detect_result': detect_result
+        'labels': labels
     })
 # Create your views here.
