@@ -28,7 +28,10 @@
 {% if images %}
   <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
     {% for img in images %}
-    <a href="?img={{img.id}}">
+
+
+    <!-- redirecting to slected image, and model -->
+    <a href="?img={{img.id}}&model={{ request.GET.model|default:model_list.0 }}">
       <div class="bg-white shadow rounded p-3">
         <img src="{{ img.image.url }}"
              alt="{{ img.original_filename }}"
@@ -60,10 +63,9 @@
       <input type="hidden" name="selected_img" value="{{ selected.image }}">
       <div class="flex items-center space-x-2">
 
-        <select name = "model" class="border border-gray-300 rounded-md px-3 py-2 text-sm shadow-sm 
-           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+        <select onchange="window.location='?img={{ selected.id }}&model='+this.value" name = "model" class="border border-gray-300 rounded-md px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
           {% for model in model_list %}
-            <option value = "{{model}}"> {{model}} </option>
+          <option value = "{{model}}" {% if model == selected_model %} selected {% endif %}> {{model}} </option>
           {% endfor %}
         </select>
 
